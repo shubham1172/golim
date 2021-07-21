@@ -31,9 +31,9 @@ Golim can be configured via the command line arguments or the environment variab
 
 | Command Line Argument | Environment Variable | Description |
 |-|-|-|
-| -web-server-addr | WEB_SERVER_ADDR | Address of the web server. |
-| -server-addr | SERVER_ADDR | Address of the golim server.  |
-| -rate-limiter-burst | RATE_LIMITER_BURST | Number of requests that can be made in a given time window. |
-| -rate-limiter-window-seconds | RATE_LIMITER_WINDOW_SECONDS | Time window in seconds for which the burst is allowed. |
+| -web-server-addr | GOLIM_WEB_SERVER_ADDR | Address of the web server. |
+| -server-addr | GOLIM_SERVER_ADDR | Address of the golim server.  |
+| -rate-limiter-burst | GOLIM_RATE_LIMITER_BURST | Number of requests that can be made in a given time window. |
+| -rate-limiter-window-seconds | GOLIM_RATE_LIMITER_WINDOW_SECONDS | Time window in seconds for which the burst is allowed. |
 
 
