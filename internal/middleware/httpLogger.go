@@ -6,14 +6,14 @@ import (
 	"time"
 )
 
-type loggerHandler struct {
+type httpLoggerHandler struct {
 	logger *log.Logger
 	next   http.Handler
 }
 
-// ServeHTTP binds loggerHandler to the Handler interface in net/http.
+// ServeHTTP binds httpLoggerHandler to the Handler interface in net/http.
 // It logs details about the incoming request and outgoing response.
-func (h loggerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h httpLoggerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id := GetRequestID(r.Context())
 
 	h.logger.Printf("[%s] Incoming %s %s %s", id, r.Method, r.URL, r.RemoteAddr)
@@ -25,7 +25,7 @@ func (h loggerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.logger.Printf("[%s] Finished %s %s %s %dms", id, r.Method, r.URL, r.RemoteAddr, duration.Milliseconds())
 }
 
-// NewLoggerMiddleware gets the logger middleware.
-func NewLoggerMiddleware(logger *log.Logger, next http.Handler) http.Handler {
-	return loggerHandler{logger, next}
+// NewHTTPLoggerMiddleware gets the logger middleware.
+func NewHTTPLoggerMiddleware(logger *log.Logger, next http.Handler) http.Handler {
+	return httpLoggerHandler{logger, next}
 }

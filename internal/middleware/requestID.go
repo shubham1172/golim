@@ -36,14 +36,16 @@ func (h requestIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := setRequestID(r.Context())
 	r = r.WithContext(ctx)
 
+	requestID := GetRequestID(ctx)
+
 	// set the request ID in the response header
-	w.Header().Set("X-Request-ID", GetRequestID(ctx))
+	w.Header().Set("X-Request-ID", requestID)
 
 	// call the next handler
 	h.next.ServeHTTP(w, r)
 }
 
-// NewRequestIDHandler gets the request ID middleware
-func NewRequestIDHandler(next http.Handler) http.Handler {
+// NewRequestIDMiddleware gets the request ID middleware.
+func NewRequestIDMiddleware(next http.Handler) http.Handler {
 	return requestIDHandler{next}
 }
