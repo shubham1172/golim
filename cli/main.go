@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"time"
 
 	"golang.org/x/time/rate"
@@ -15,8 +16,8 @@ import (
 
 var (
 	webServerAddr            = "http://127.0.0.1:8000"
-	serverAddress            = "localhost:8080"
-	rateLimiterBurst         = 10
+	serverAddress            = "0.0.0.0:8080"
+	rateLimiterBurst         = 60
 	rateLimiterWindowSeconds = 1
 )
 
@@ -26,7 +27,22 @@ func getProxyHandler(target *url.URL) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
-func lookupEnvOrDefault(key, def interface{}) interface{} {
+func lookupEnvOrDefaultString(key, def string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+
+	return def
+}
+
+func lookupEnvOrDefaultInt(key string, def int) int {
+	if val := os.Getenv(key); val != "" {
+		ival, err := strconv.Atoi(val)
+		if err == nil {
+			return ival
+		}
+	}
+
 	return def
 }
 
@@ -35,10 +51,10 @@ func main() {
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 
 	// set up flags
-	flag.StringVar(&serverAddress, "server-addr", lookupEnvOrDefault("GOLIM_SERVER_ADDR", serverAddress).(string), "address of this server")
-	flag.StringVar(&webServerAddr, "web-server-addr", lookupEnvOrDefault("GOLIM_WEB_SERVER_ADDR", webServerAddr).(string), "address of the web server")
-	flag.IntVar(&rateLimiterBurst, "rate-limiter-burst", lookupEnvOrDefault("GOLIM_RATE_LIMITER_BURST", rateLimiterBurst).(int), "number of requests that can be made in a given time window")
-	flag.IntVar(&rateLimiterWindowSeconds, "rate-limiter-window-seconds", lookupEnvOrDefault("GOLIM_RATE_LIMITER_WINDOW_SECONDS", rateLimiterWindowSeconds).(int), "size of the rate limiter window")
+	flag.StringVar(&serverAddress, "server-addr", lookupEnvOrDefaultString("GOLIM_SERVER_ADDR", serverAddress), "address of this server")
+	flag.StringVar(&webServerAddr, "web-server-addr", lookupEnvOrDefaultString("GOLIM_WEB_SERVER_ADDR", webServerAddr), "address of the web server")
+	flag.IntVar(&rateLimiterBurst, "rate-limiter-burst", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_BURST", rateLimiterBurst), "number of requests that can be made in a given time window")
+	flag.IntVar(&rateLimiterWindowSeconds, "rate-limiter-window-seconds", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_WINDOW_SECONDS", rateLimiterWindowSeconds), "size of the rate limiter window")
 	flag.Parse()
 
 	webServerAddrURL, err := url.Parse(webServerAddr)
