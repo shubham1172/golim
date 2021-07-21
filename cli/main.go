@@ -17,7 +17,7 @@ import (
 var (
 	webServerAddr            = "http://127.0.0.1:8000"
 	serverAddress            = "0.0.0.0:8080"
-	rateLimiterBurst         = 60
+	rateLimiterBurst         = 20
 	rateLimiterWindowSeconds = 1
 )
 
@@ -54,7 +54,7 @@ func main() {
 	flag.StringVar(&serverAddress, "server-addr", lookupEnvOrDefaultString("GOLIM_SERVER_ADDR", serverAddress), "address of this server")
 	flag.StringVar(&webServerAddr, "web-server-addr", lookupEnvOrDefaultString("GOLIM_WEB_SERVER_ADDR", webServerAddr), "address of the web server")
 	flag.IntVar(&rateLimiterBurst, "rate-limiter-burst", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_BURST", rateLimiterBurst), "number of requests that can be made in a given time window")
-	flag.IntVar(&rateLimiterWindowSeconds, "rate-limiter-window-seconds", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_WINDOW_SECONDS", rateLimiterWindowSeconds), "size of the rate limiter window")
+	flag.IntVar(&rateLimiterWindowSeconds, "rate-limiter-window-seconds", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_WINDOW_SECONDS", rateLimiterWindowSeconds), "time window in seconds for which the burst is allowed")
 	flag.Parse()
 
 	webServerAddrURL, err := url.Parse(webServerAddr)
