@@ -9,7 +9,7 @@ Rate-limited proxy server in Go. This can be used in two ways
 
 ## Pull from DockerHub
 
-The easiest way to use this is via the docker hub image.
+The easiest way to use this is via the docker hub image. To start running golim on port 8080:
 
 ```sh
 docker run --rm -p 8080:80 shubham1172/golim:latest -web-server-addr=http://192.168.0.12:8000
