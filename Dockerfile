@@ -9,5 +9,5 @@ RUN go build -o /golim ./cli/main.go
 FROM alpine
 WORKDIR /
 COPY --from=build /golim /golim
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT [ "/golim" ]

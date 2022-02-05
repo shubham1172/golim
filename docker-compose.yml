@@ -7,9 +7,8 @@ services:
     image: shubham1172/golim:latest
     container_name: golim
     environment:
-      - GOLIM_WEB_SERVER_ADDR=http://192.168.0.12:8000
-      - GOLIM_SERVER_ADDR=0.0.0.0:8080
+      - GOLIM_WEB_SERVER_ADDR=http://192.168.0.11:8000
       - GOLIM_RATE_LIMITER_BURST=20
       - GOLIM_RATE_LIMITER_WINDOW_SECONDS=1
     ports:
-      - "8080:8080"
+      - "8080:80"

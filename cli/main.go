@@ -16,10 +16,11 @@ import (
 
 var (
 	webServerAddr            = "http://127.0.0.1:8000"
-	serverAddress            = "0.0.0.0:8080"
 	rateLimiterBurst         = 20
 	rateLimiterWindowSeconds = 1
 )
+
+const serverAddress = "0.0.0.0:80"
 
 func getProxyHandler(target *url.URL) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +52,6 @@ func main() {
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 
 	// set up flags
-	flag.StringVar(&serverAddress, "server-addr", lookupEnvOrDefaultString("GOLIM_SERVER_ADDR", serverAddress), "address of this server")
 	flag.StringVar(&webServerAddr, "web-server-addr", lookupEnvOrDefaultString("GOLIM_WEB_SERVER_ADDR", webServerAddr), "address of the web server")
 	flag.IntVar(&rateLimiterBurst, "rate-limiter-burst", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_BURST", rateLimiterBurst), "number of requests that can be made in a given time window")
 	flag.IntVar(&rateLimiterWindowSeconds, "rate-limiter-window-seconds", lookupEnvOrDefaultInt("GOLIM_RATE_LIMITER_WINDOW_SECONDS", rateLimiterWindowSeconds), "time window in seconds for which the burst is allowed")
@@ -72,7 +72,7 @@ func main() {
 	middlewareMux = middleware.NewRequestIDMiddleware(middlewareMux)
 
 	// start the server
-	logger.Printf("Starting the server on %s\n", serverAddress)
+	logger.Printf("Starting the server on %s (container)\n", serverAddress)
 
 	err = http.ListenAndServe(serverAddress, middlewareMux)
 	if err != nil {

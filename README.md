@@ -12,7 +12,7 @@ Rate-limited proxy server in Go. This can be used in two ways
 The easiest way to use this is via the docker hub image.
 
 ```sh
-docker run --rm -p 8080:8080 shubham1172/golim:latest -web-server-addr=http://192.168.0.12:8000
+docker run --rm -p 8080:80 shubham1172/golim:latest -web-server-addr=http://192.168.0.12:8000
 ```
 
 ## Build from source
@@ -32,7 +32,6 @@ Golim can be configured via the command line arguments or the environment variab
 | Command Line Argument | Environment Variable | Description |
 |-|-|-|
 | -web-server-addr | GOLIM_WEB_SERVER_ADDR | Address of the web server. |
-| -server-addr | GOLIM_SERVER_ADDR | Address of the golim server.  |
 | -rate-limiter-burst | GOLIM_RATE_LIMITER_BURST | Number of requests that can be made in a given time window. |
 | -rate-limiter-window-seconds | GOLIM_RATE_LIMITER_WINDOW_SECONDS | Time window in seconds for which the burst is allowed. |
 
